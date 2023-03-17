@@ -1,0 +1,10 @@
+{$DOMAIN} {
+		reverse_proxy backend:8001
+}
+
+{$DEBUG_DOMAIN} {
+		reverse_proxy backend:9001
+}
+
+
+

@@ -1,0 +1,11 @@
+.env
+postgres/
+**/__pycache__/
+*/cookies.json
+.DS_store
+.idea
+*/.venv
+.production_env
+*/mypy_cache
+postgres.zip
+tagger/app/database/__pycache__
