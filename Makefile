@@ -7,10 +7,6 @@ docker_backend := $(docker_run) backend
 docker_production_run := docker compose -f production.docker-compose.yml run --rm
 docker_production_backend := $(docker_production_run) backend
 
-image_registry := ygitlab.southeastasia.cloudapp.azure.com:5050
-image_path := youzu_ai/new-varys/backend-service
-image_tag := latest
-
 
 -include ./Makefile.properties
 
