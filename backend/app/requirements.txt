@@ -23,9 +23,6 @@ sqlalchemy[mypy]
 types-python-jose
 types-passlib
 
-
-# sqlalchemy_json
-
 # dev tooling
 faker==15.3.4
 
@@ -34,11 +31,3 @@ celery==5.2.7
 psycopg==3.1.8
 psycopg-binary==3.1.8
 redis==4.4.2
-
-# task: follower count
-requests==2.28.2
-beautifulsoup4==4.11.1
-lxml==4.9.2
-types-beautifulsoup4
-types-requests
-celery-types
