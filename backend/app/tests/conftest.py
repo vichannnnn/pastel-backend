@@ -62,4 +62,3 @@ def test_authentication_client():
 def not_authenticated_client():
     app.dependency_overrides = {get_session: override_session}
     yield TestClient(app)
-

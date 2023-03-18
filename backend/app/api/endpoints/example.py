@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.tasks.generate_pastel import generate_pastel_art
-from app.schemas.core import PastelPromptInput
+from app.schemas.core import PastelPrompt, PromptType
 
 router = APIRouter()
 
@@ -11,8 +11,14 @@ async def sanity_check():
 
 
 @router.post("/generate_pastel_art")
-async def trigger_generate_pastel_art(prompt_input: PastelPromptInput | None = None):
-    task = generate_pastel_art.delay(prompt_input.prompt_input)
+async def trigger_generate_pastel_art(prompt: PastelPrompt | None = None):
+
+    if prompt:
+        prompt.type = PromptType.Custom
+    else:
+        prompt.type = PromptType.Default
+
+    task = generate_pastel_art.delay(prompt)
     return {"task_id": task.id}
 
 
