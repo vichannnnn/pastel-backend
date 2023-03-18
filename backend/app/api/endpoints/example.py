@@ -1,5 +1,8 @@
 from fastapi import APIRouter
 from app.tasks.generate_pastel import generate_pastel_art
+from typing import Optional
+from pydantic import BaseModel
+
 
 router = APIRouter()
 
@@ -9,9 +12,13 @@ async def sanity_check():
     return {"Hello": "World!"}
 
 
+class GeneratePastelArtInput(BaseModel):
+    prompt_input: Optional[str] = None
+
+
 @router.post("/generate_pastel_art")
-async def trigger_generate_pastel_art():
-    task = generate_pastel_art.delay()
+async def trigger_generate_pastel_art(prompt_input: GeneratePastelArtInput | None = None):
+    task = generate_pastel_art.delay(prompt_input.prompt_input)
     return {"task_id": task.id}
 
 

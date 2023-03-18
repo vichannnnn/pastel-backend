@@ -1,14 +1,14 @@
 import requests
 from app.worker import celery_app
 import random
-from typing import Tuple
+from typing import Tuple, Optional
 
 API_URL = "https://pastel.himaaa.xyz"
 PASTEL_GENERATE_ENDPOINT = "/predictions"
 
 
 @celery_app.task(name="generate_pastel_art")
-def generate_pastel_art() -> Tuple[str, str]:
+def generate_pastel_art(prompt_input: Optional[str] = None) -> Tuple[str, str]:
     extra_random_prompt = (
         "red hair, blue hair, green hair, blonde hair, black hair, black eyes, red eyes, "
         "witch hat, school uniform, cat ears, gothic Lolita, maid outfit, kimono, "
@@ -31,9 +31,12 @@ def generate_pastel_art() -> Tuple[str, str]:
         "pom-pom beanie".split(",")
     )
 
-    prompt = "mksks style, masterpiece, best quality, ultra-detailed, illustration, portrait, 1girl"
-        # + ",".join(random.sample(extra_random_prompt, 5))
+    prompt = "(mksks style), (masterpiece), (best quality), (ultra-detailed), (highres), illustration, portrait, 1girl"
+    #  + ",".join(random.sample(extra_random_prompt, 5))
 
+    if prompt_input:
+        prompt += prompt_input
+        
     negative_prompt = (
         "lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, "
         "blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), "
