@@ -1,6 +1,6 @@
 import os
 from celery import Celery
-from celery.schedules import crontab
+
 
 celery_app = Celery(
     "tasks",
@@ -10,3 +10,12 @@ celery_app.conf.timezone = "Asia/Singapore"
 
 celery_app.conf.broker_url = os.environ.get("CELERY_BROKER_URL")
 celery_app.conf.result_backend = os.environ.get("CELERY_RESULT_BACKEND")
+
+celery_app.conf.beat_schedule = {
+
+    "automated_generate_pastel_art_task": {
+        "task": "automated_generate_pastel_art_task",
+        "schedule": 15.0,
+    },
+
+}

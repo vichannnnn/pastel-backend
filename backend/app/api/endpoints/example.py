@@ -1,6 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from app.tasks.generate_pastel import generate_pastel_art
-from app.schemas.core import PastelPrompt, PromptType
+from app.schemas.core import PastelPrompt
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.api.deps import get_session
+
 
 router = APIRouter()
 
@@ -12,7 +15,6 @@ async def sanity_check():
 
 @router.post("/generate_pastel_art")
 async def trigger_generate_pastel_art(prompt: PastelPrompt | None = None):
-
     task = generate_pastel_art.delay(dict(prompt))
     return {"task_id": task.id}
 

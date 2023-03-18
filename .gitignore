@@ -7,4 +7,5 @@ postgres/
 **/venv
 */mypy_cache
 postgres.zip
+backend/images/
 

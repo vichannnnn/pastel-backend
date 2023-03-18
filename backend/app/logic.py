@@ -1,6 +1,6 @@
 import random
 from app.schemas.core import PastelPrompt, PromptType
-from typing import Optional
+import numpy as np
 
 
 extra_random_prompt = (
@@ -48,6 +48,7 @@ def prompt_input(prompt: PastelPrompt) -> dict:
     else:
         res_prompt = base_prompt
 
+    random_seed = np.random.randint(0, 9999)
     data = {
         "input": {
             "prompt": res_prompt,
@@ -56,7 +57,7 @@ def prompt_input(prompt: PastelPrompt) -> dict:
             "height": 640,
             "steps": 20,
             "guidance": 9,
-            "seed": 0,
+            "seed": random_seed,
             "hires": True,
         }
     }

@@ -13,8 +13,3 @@ def get_db() -> Generator[Session, None, None]:
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session() as session:
         yield session
-
-
-async def get_tagger_session() -> AsyncSession:
-    async with async_session() as session:
-        return session

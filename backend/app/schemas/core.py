@@ -23,3 +23,4 @@ class PastelImage(BaseModel):
     steps: int
     guidance: int
     image: str
+    seed: int
