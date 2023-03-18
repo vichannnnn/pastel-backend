@@ -1,10 +1,9 @@
-{$DOMAIN} {
-		reverse_proxy backend:8001
+art-backend.himaaa.xyz {
+    reverse_proxy backend:8000
 }
 
-{$DEBUG_DOMAIN} {
-		reverse_proxy backend:9001
+art.himaaa.xyz {
+    reverse_proxy frontend:5173
 }
-
 
 

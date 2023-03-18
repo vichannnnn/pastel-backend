@@ -31,12 +31,9 @@ def generate_pastel_art() -> Tuple[str, str]:
         "pom-pom beanie".split(",")
     )
 
-    prompt = (
-        "masterpiece, best quality, ultra-detailed, illustration, portrait, 1girl"
-        + ",".join(random.sample(extra_random_prompt, 5))
-    )
+    prompt = "mksks style, masterpiece, best quality, ultra-detailed, illustration, portrait, 1girl"
+        # + ",".join(random.sample(extra_random_prompt, 5))
 
-    print(prompt)
     negative_prompt = (
         "lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, "
         "blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), "
@@ -47,14 +44,14 @@ def generate_pastel_art() -> Tuple[str, str]:
     data = {
         "input": {
             "prompt": prompt,
-            "negative_prompt": negative_prompt,
-            "width": 512,
-            "height": 512,
-            "num_outputs": 1,
-            "num_inference_steps": 50,
-            "guidance_scale": 12,
-            "scheduler": "DPMSolverMultistep",
+            "neg_prompt": negative_prompt,
+            "width": 448,
+            "height": 640,
+            "steps": 20,
+            "guidance": 7,
+            "seed": 0,
+            "hires": True
         }
     }
     resp = requests.post(API_URL + PASTEL_GENERATE_ENDPOINT, json=data)
-    return prompt, resp.json()["output"][0]
+    return resp.json()["output"][0]
