@@ -13,12 +13,7 @@ async def sanity_check():
 @router.post("/generate_pastel_art")
 async def trigger_generate_pastel_art(prompt: PastelPrompt | None = None):
 
-    if prompt:
-        prompt.type = PromptType.Custom
-    else:
-        prompt.type = PromptType.Default
-
-    task = generate_pastel_art.delay(prompt)
+    task = generate_pastel_art.delay(dict(prompt))
     return {"task_id": task.id}
 
 

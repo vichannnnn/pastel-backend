@@ -1,9 +1,11 @@
-art-backend.himaaa.xyz {
-    reverse_proxy backend:8000
+{$BACKEND_URL} {
+	reverse_proxy {$BACKEND_CONTAINER_URL}
 }
 
-art.himaaa.xyz {
-    reverse_proxy frontend:5173
+{$DEBUG_URL} {
+	reverse_proxy {$DEBUG_CONTAINER_URL}
 }
 
-
+{$FRONTEND_URL} {
+	reverse_proxy {$FRONTEND_CONTAINER_URL}
+}

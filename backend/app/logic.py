@@ -37,7 +37,7 @@ negative_prompt = (
 )
 
 
-def prompt_input(prompt: Optional[PastelPrompt]) -> dict:
+def prompt_input(prompt: PastelPrompt) -> dict:
 
     if prompt.type == PromptType.Custom:
         res_prompt = base_prompt + prompt.input

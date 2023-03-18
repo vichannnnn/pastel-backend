@@ -20,7 +20,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./backend:/app
-      -
+
   db:
     networks:
       - internal-network
@@ -86,6 +86,13 @@ services:
        - '443:443'
        - '8000:8000'
        - '9000:9000'
+     environment:
+       BACKEND_URL: ${BACKEND_URL}
+       BACKEND_CONTAINER_URL: ${BACKEND_CONTAINER_URL}
+       DEBUG_URL: ${DEBUG_URL}
+       DEBUG_CONTAINER_URL: ${DEBUG_CONTAINER_URL}
+       FRONTEND_URL: ${FRONTEND_URL}
+       FRONTEND_CONTAINER_URL: ${FRONTEND_CONTAINER_URL}
      volumes:
        - ./Caddyfile:/etc/caddy/Caddyfile
        - caddy_data:/data
