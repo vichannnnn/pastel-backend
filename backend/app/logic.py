@@ -1,6 +1,5 @@
 import random
 from app.schemas.core import PastelPrompt, PromptType
-import numpy as np
 
 
 extra_random_prompt = (
@@ -27,14 +26,7 @@ extra_random_prompt = (
 
 base_prompt = "(mksks style), (masterpiece), (best quality), (ultra-detailed), (highres), illustration, portrait, 1girl"
 
-negative_prompt = (
-    "lowres, ((bad anatomy)), ((bad hands)), ((((((((((bad fingers)))))))))), text, missing finger, extra digits, "
-    "fewer digits, "
-    "blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), ((poorly drawn eye)),"
-    "(ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), "
-    "((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, "
-    "humpbacked, long body, long neck, ((jpeg artifacts)) "
-)
+negative_prompt = "lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, long neck, ((jpeg artifacts))"
 
 
 def prompt_input(prompt: PastelPrompt) -> dict:
@@ -48,7 +40,6 @@ def prompt_input(prompt: PastelPrompt) -> dict:
     else:
         res_prompt = base_prompt
 
-    random_seed = np.random.randint(0, 9999)
     data = {
         "input": {
             "prompt": res_prompt,
@@ -56,8 +47,8 @@ def prompt_input(prompt: PastelPrompt) -> dict:
             "width": 448,
             "height": 640,
             "steps": 20,
-            "guidance": 9,
-            "seed": random_seed,
+            "guidance": 7,
+            "seed": 0,
             "hires": True,
         }
     }

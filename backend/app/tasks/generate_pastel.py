@@ -12,7 +12,7 @@ import psycopg
 import os
 from psycopg import sql
 
-DB_URL = os.environ['TASK_RUNNER_DATABASE_URL']
+DB_URL = os.environ["TASK_RUNNER_DATABASE_URL"]
 API_URL = "https://pastel.himaaa.xyz"
 PASTEL_GENERATE_ENDPOINT = "/predictions"
 
@@ -36,8 +36,8 @@ def generate_pastel_art(prompt: Dict[str, Union[str, PromptType]]) -> str:
     with open(file_name, "wb") as f:
         f.write(img_data)
 
-    data['input'].pop("hires")
-    pastel_obj = PastelArt(**data['input'])
+    data["input"].pop("hires")
+    pastel_obj = PastelArt(**data["input"])
     with psycopg.connect(DB_URL) as conn:
         with conn.cursor() as cur:
             table = "pastel_art"
@@ -73,9 +73,7 @@ def generate_pastel_art(prompt: Dict[str, Union[str, PromptType]]) -> str:
 
 @celery_app.task(name="automated_generate_pastel_art_task")
 def automated_generate_pastel_art_task() -> str:
-    types = {
-        'type': random.choice([PromptType.Random, PromptType.Default])
-    }
+    types = {"type": random.choice([PromptType.Random, PromptType.Default])}
     prompt = PastelPrompt(**types)
     data = prompt_input(prompt)
     resp = requests.post(API_URL + PASTEL_GENERATE_ENDPOINT, json=data)
@@ -93,8 +91,8 @@ def automated_generate_pastel_art_task() -> str:
     with open(file_name, "wb") as f:
         f.write(img_data)
 
-    data['input'].pop("hires")
-    pastel_obj = PastelArt(**data['input'])
+    data["input"].pop("hires")
+    pastel_obj = PastelArt(**data["input"])
     with psycopg.connect(DB_URL) as conn:
         with conn.cursor() as cur:
             table = "pastel_art"
