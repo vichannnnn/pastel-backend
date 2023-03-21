@@ -3,8 +3,8 @@ from app.tasks.generate_pastel import generate_pastel_art
 from app.schemas.core import PastelPrompt
 
 
-
 router = APIRouter()
+
 
 @router.post("/generate_pastel_art")
 async def trigger_generate_pastel_art(prompt: PastelPrompt | None = None):

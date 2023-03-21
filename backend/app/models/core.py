@@ -1,8 +1,9 @@
 from typing import List
 from app.db.base_class import Base
+from app.schemas.core import PastelImage
 from sqlalchemy import Column, Integer, String, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.schemas.core import PastelImage
+
 
 
 class PastelArt(Base):
@@ -24,7 +25,7 @@ class PastelArt(Base):
         return PastelImage(**self.__dict__)
 
     @classmethod
-    async def get(cls, session: AsyncSession, id: int) -> PastelImage:
+    async def get(cls, session: AsyncSession, id: int) -> PastelImage:  # pylint: disable=redefined-builtin,invalid-name
         stmt = select(PastelArt).where(PastelArt.id == id)
         res = await session.execute(stmt)
         return res.scalars().one()

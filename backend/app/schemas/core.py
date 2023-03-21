@@ -4,14 +4,14 @@ from enum import Enum
 
 
 class PromptType(str, Enum):
-    Random = "RANDOM"
-    Default = "DEFAULT"
-    Custom = "CUSTOM"
+    RANDOM = "RANDOM"
+    DEFAULT = "DEFAULT"
+    CUSTOM = "CUSTOM"
 
 
 class PastelPrompt(BaseModel):
     input: Optional[str] = None
-    type: PromptType = PromptType.Default
+    type: PromptType = PromptType.DEFAULT
 
 
 class PastelImage(BaseModel):

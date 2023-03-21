@@ -69,6 +69,3 @@ def generate_pastel_art(prompt: Dict[str, Union[str, PromptType]]) -> str:
             cur.execute(insert_stmt, values)
         conn.commit()
     return resp.json()["output"][0]
-
-
-

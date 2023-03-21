@@ -2,7 +2,7 @@ import random
 from app.schemas.core import PastelPrompt, PromptType
 
 
-extra_random_prompt = (
+EXTRA_RANDOM_PROMPT = (
     "red hair, blue hair, green hair, blonde hair, black hair, black eyes, red eyes, "
     "witch hat, school uniform, cat ears, gothic Lolita, maid outfit, kimono, "
     "sailor suit, bunny girl, angel wings, horns, princess dress, glasses, long hair, "
@@ -24,26 +24,30 @@ extra_random_prompt = (
     "pom-pom beanie".split(",")
 )
 
-base_prompt = "(mksks style), (masterpiece), (best quality), (ultra-detailed), (highres), illustration, portrait, 1girl"
+BASE_PROMPT = "(mksks style), (masterpiece), (best quality), (ultra-detailed), (highres), illustration, portrait, 1girl"
 
-negative_prompt = "lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, long neck, ((jpeg artifacts))"
+NEGATIVE_PROMPT = "lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, " \
+                  "((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), " \
+                  "((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), " \
+                  "monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, " \
+                  "long neck, ((jpeg artifacts)) "
 
 
 def prompt_input(prompt: PastelPrompt) -> dict:
 
-    if prompt.type == PromptType.Custom:
-        res_prompt = base_prompt + prompt.input
+    if prompt.type == PromptType.CUSTOM:
+        res_prompt = BASE_PROMPT + prompt.input
 
-    elif prompt.type == PromptType.Random:
-        res_prompt = base_prompt + ",".join(random.sample(extra_random_prompt, 5))
+    elif prompt.type == PromptType.RANDOM:
+        res_prompt = BASE_PROMPT + ",".join(random.sample(EXTRA_RANDOM_PROMPT, 5))
 
     else:
-        res_prompt = base_prompt
+        res_prompt = BASE_PROMPT
 
     data = {
         "input": {
             "prompt": res_prompt,
-            "neg_prompt": negative_prompt,
+            "neg_prompt": NEGATIVE_PROMPT,
             "width": 448,
             "height": 640,
             "steps": 20,
