@@ -5,7 +5,9 @@ services:
   pastel-backend:
     container_name: pastel-backend
     build: ./backend
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 5001 --reload
+    ports:
+      - "5001:5001"
     networks:
       - internal-network
       - default
@@ -89,7 +91,6 @@ services:
      ports:
        - '80:80'
        - '443:443'
-       - '8000:8000'
        - '9000:9000'
      environment:
        BACKEND_URL: ${BACKEND_URL}
