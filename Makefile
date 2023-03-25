@@ -1,7 +1,7 @@
 .ONESHELL:
 SHELL = bash
 
-backend_container := backend
+backend_container := pastel-backend
 docker_run := docker compose run --rm
 docker_backend := $(docker_run) $(backend_container)
 

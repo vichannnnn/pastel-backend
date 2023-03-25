@@ -1,6 +1,16 @@
 from typing import Optional
-from pydantic import BaseModel
 from enum import Enum
+from typing import Generic, List, TypeVar
+from pydantic import BaseModel
+
+T = TypeVar("T")
+
+
+class Page(BaseModel, Generic[T]):
+    items: List[T]
+    page: int
+    size: int
+    total: int
 
 
 class PromptType(str, Enum):
@@ -17,7 +27,7 @@ class PastelPrompt(BaseModel):
 class PastelImage(BaseModel):
     row_id: int
     prompt: str
-    negative_prompt: str
+    neg_prompt: str
     width: int
     height: int
     steps: int
