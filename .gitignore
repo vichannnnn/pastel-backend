@@ -8,4 +8,4 @@ postgres/
 */mypy_cache
 postgres.zip
 backend/images/
-
+backend/env.py
