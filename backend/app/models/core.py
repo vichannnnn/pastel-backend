@@ -3,6 +3,7 @@ from app.db.base_class import Base
 from app.schemas.core import PastelImage
 from sqlalchemy import Column, Integer, String, select, func
 from sqlalchemy.ext.asyncio import AsyncSession
+import base64
 
 
 class PastelArt(Base):
@@ -53,6 +54,15 @@ class PastelArt(Base):
         )
         res = await session.execute(stmt)
         pastel_images_data = res.fetchall()
-        pastel_images = [PastelImage(**dict(row)) for row in pastel_images_data]
+        pastel_images = []
+
+        for i in pastel_images_data:
+            with open(i['image'], "rb") as image_file:
+                encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                i_dict = i._asdict()
+                i_dict['image'] = encoded_string
+                i = PastelImage(**i_dict)
+            pastel_images.append(i)
+
         total = pastel_images_data[0]["total"] if pastel_images_data else 0
         return pastel_images, total
