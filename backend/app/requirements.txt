@@ -11,6 +11,7 @@ pytest
 httpx==0.23.0
 requests
 psycopg
+docker==6.0.1
 
 # LINTING
 black
