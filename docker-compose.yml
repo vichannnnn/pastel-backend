@@ -2,15 +2,14 @@
 version: '3.8'
 
 services:
-  pastel-backend:
-    container_name: pastel-backend
+  backend:
+    container_name: backend
     build: ./backend
-    command: uvicorn app.main:app --host 0.0.0.0 --port 5001 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     ports:
-      - "5001:5001"
+      - "8000:8000"
     networks:
       - internal-network
-      - default
     environment:
       CELERY_BROKER_URL: ${REDIS_URL}
       CELERY_RESULT_BACKEND: ${REDIS_URL}
@@ -28,7 +27,6 @@ services:
   db:
     networks:
       - internal-network
-      - default
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: ${POSTGRES_HOST}
@@ -48,12 +46,16 @@ services:
 
   redis:
     image: redis:7.0.7-alpine
+    networks:
+      - internal-network
     ports:
       - "6379:6379"
     command: redis-server --loglevel verbose
     restart: unless-stopped
 
   scheduler:
+    networks:
+     - internal-network
     environment:
       CELERY_BROKER_URL: ${REDIS_URL}
       CELERY_RESULT_BACKEND: ${REDIS_URL}
@@ -73,6 +75,8 @@ services:
   scheduler-gui:
     environment:
       CELERY_BROKER_URL: ${REDIS_URL}
+    networks:
+      - internal-network
     links:
       - scheduler
     ports:
@@ -87,7 +91,6 @@ services:
      image: caddy:2.6.2-alpine
      networks:
        - internal-network
-       - default
      ports:
        - '80:80'
        - '443:443'
