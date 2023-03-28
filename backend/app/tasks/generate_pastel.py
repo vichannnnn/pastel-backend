@@ -11,10 +11,7 @@ from app.exceptions import AppError
 import psycopg
 import os
 from psycopg import sql
-import docker
 
-client = docker.from_env()
-nginx_container = client.containers.get('image-nginx')
 
 DB_URL = os.environ["TASK_RUNNER_DATABASE_URL"]
 API_URL = os.environ["MODELLING_API_URL"]
@@ -36,9 +33,9 @@ def generate_pastel_art(prompt: Dict[str, Union[str, PromptType]]) -> str:
     img_data = base64.b64decode(img_string)
 
     fake = Faker()
-    file_name = f"{fake.word()}_{fake.word()}_{random.randint(1000, 9999)}.png"
+    file_name = f"/app/images/{fake.word()}_{fake.word()}_{random.randint(1000, 9999)}.png"
+    
     with open(file_name, "wb") as f:
-        nginx_container.put_archive('/usr/share/nginx/html/images', f)
         f.write(img_data)
 
     data["input"].pop("hires")
