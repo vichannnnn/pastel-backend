@@ -4,7 +4,6 @@ from app.schemas.core import PastelPrompt, PastelImage
 from app.models.core import PastelArt
 from app.db.database import AsyncSession
 from app.api.deps import get_session
-from typing import List
 from fastapi_pagination import Page
 
 

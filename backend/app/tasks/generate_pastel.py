@@ -33,7 +33,8 @@ def generate_pastel_art(prompt: Dict[str, Union[str, PromptType]]) -> str:
     img_data = base64.b64decode(img_string)
 
     fake = Faker()
-    file_name = f"/app/images/{fake.word()}_{fake.word()}_{random.randint(1000, 9999)}.png"
+    image_name = f"{fake.word()}_{fake.word()}_{random.randint(1000, 9999)}.png"
+    file_name = f"/app/images/{image_name}"
     
     with open(file_name, "wb") as f:
         f.write(img_data)
@@ -61,7 +62,7 @@ def generate_pastel_art(prompt: Dict[str, Union[str, PromptType]]) -> str:
                 pastel_obj.steps,
                 pastel_obj.guidance,
                 pastel_obj.seed,
-                file_name,
+                image_name,
             )
             insert_stmt = sql.SQL("INSERT INTO {} ({}) VALUES ({})").format(
                 sql.Identifier(table),
@@ -91,7 +92,9 @@ def automated_generate_pastel_art_task() -> str:
     img_data = base64.b64decode(img_string)
 
     fake = Faker()
-    file_name = f"./images/{fake.word()}_{fake.word()}_{random.randint(1000, 9999)}.png"
+    image_name = f"{fake.word()}_{fake.word()}_{random.randint(1000, 9999)}.png"
+    file_name = f"/app/images/{image_name}"
+
     with open(file_name, "wb") as f:
         f.write(img_data)
 
@@ -118,7 +121,7 @@ def automated_generate_pastel_art_task() -> str:
                 pastel_obj.steps,
                 pastel_obj.guidance,
                 pastel_obj.seed,
-                file_name,
+                image_name,
             )
             insert_stmt = sql.SQL("INSERT INTO {} ({}) VALUES ({})").format(
                 sql.Identifier(table),
