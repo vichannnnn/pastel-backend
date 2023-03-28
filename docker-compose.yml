@@ -23,6 +23,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./backend:/app
+      - images-volume:/app/images
 
   db:
     networks:
@@ -71,6 +72,8 @@ services:
       test: ["CMD-SHELL", "celery inspect ping"]
     volumes:
       - ./backend:/app
+      - images-volume:/app/images
+
 
   scheduler-gui:
     environment:
@@ -87,29 +90,19 @@ services:
     image: mher/flower:1.2.0
     restart: unless-stopped
 
-  caddy:
-     image: caddy:2.6.2-alpine
-     networks:
-       - internal-network
-     ports:
-       - '80:80'
-       - '443:443'
-       - '9000:9000'
-     environment:
-       BACKEND_URL: ${BACKEND_URL}
-       BACKEND_CONTAINER_URL: ${BACKEND_CONTAINER_URL}
-       DEBUG_URL: ${DEBUG_URL}
-       DEBUG_CONTAINER_URL: ${DEBUG_CONTAINER_URL}
-       FRONTEND_URL: ${FRONTEND_URL}
-       FRONTEND_CONTAINER_URL: ${FRONTEND_CONTAINER_URL}
-     volumes:
-       - ./Caddyfile:/etc/caddy/Caddyfile
-       - caddy_data:/data
-       - caddy_config:/config
+  image-nginx:
+    container_name: image-nginx
+    image: image-nginx
+    networks:
+      - internal-network
+    ports:
+      - '80:80'
+    volumes:
+      - images-volume:/usr/share/nginx/html/images
+
 
 volumes:
-  caddy_config: null
-  caddy_data: null
+  images-volume:
 
 networks:
   internal-network:
