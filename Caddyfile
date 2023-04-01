@@ -12,6 +12,7 @@
 {$IMAGE_URL} {
         handle_path /images/* {
                 root * /srv
+                header Access-Control-Allow-Origin *
                 file_server
         }
 }
