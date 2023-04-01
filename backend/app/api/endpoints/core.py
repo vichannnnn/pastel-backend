@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 @router.post("/generate_pastel_art")
-async def trigger_generate_pastel_art(prompt: PastelPrompt | None = None):
+async def trigger_generate_pastel_art(prompt: PastelPrompt):
     task = generate_pastel_art.delay(dict(prompt))
     return {"task_id": task.id}
 

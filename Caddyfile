@@ -1,17 +1,17 @@
-http://makina.moe:5173 {
-    reverse_proxy frontend:5173
+
+{$FRONTEND_URL} {
+        reverse_proxy {$FRONTEND_CONTAINER_URL}
 }
 
-http://api.makina.moe:8001 {
-    handle_path /api/* {
-        reverse_proxy backend:8001
-    }
+{$BACKEND_URL} {
+        handle_path /api/* {
+                reverse_proxy {$BACKEND_CONTAINER_URL}
+        }
 }
-    
-http://img.makina.moe:8002 {
-    handle_path /images/* {
-        root * /srv
-        file_server
-    }
 
+{$IMAGE_URL} {
+        handle_path /images/* {
+                root * /srv
+                file_server
+        }
 }

@@ -1,4 +1,3 @@
-from typing import Optional
 from enum import Enum
 from typing import Generic, List, TypeVar
 from pydantic import BaseModel
@@ -15,13 +14,12 @@ class Page(BaseModel, Generic[T]):
 
 class PromptType(str, Enum):
     RANDOM = "RANDOM"
-    DEFAULT = "DEFAULT"
     CUSTOM = "CUSTOM"
 
 
 class PastelPrompt(BaseModel):
-    input: Optional[str] = None
-    type: PromptType = PromptType.DEFAULT
+    prompt: str
+    neg_prompt: str
 
 
 class PastelImage(BaseModel):

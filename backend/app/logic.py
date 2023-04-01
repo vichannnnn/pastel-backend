@@ -1,28 +1,5 @@
-import random
-from app.schemas.core import PastelPrompt, PromptType
+from app.schemas.core import PastelPrompt
 
-
-EXTRA_RANDOM_PROMPT = (
-    "red hair, blue hair, green hair, blonde hair, black hair, black eyes, red eyes, "
-    "witch hat, school uniform, cat ears, gothic Lolita, maid outfit, kimono, "
-    "sailor suit, bunny girl, angel wings, horns, princess dress, glasses, long hair, "
-    "short hair, twin tails, odango (buns), beret, ribbon, choker, thigh-high stockings, "
-    "knee-high boots, platform shoes, oversized sweater, denim shorts, leather jacket, "
-    "skater skirt, crop top, hoodie, cat-eye sunglasses, flower crown, lace gloves, fingerless "
-    "gloves, parasol, top hat, feather boa, frilly apron, suspender skirt, bandana, "
-    "floral headband, heart-shaped sunglasses, backpack, sneakers, arm warmers, leg warmers, "
-    "scarf, bowtie, halter top, high-waisted shorts, peplum dress, strappy sandals, "
-    "feathered earrings, feathered necklace, ear cuffs, waist cincher, fishnet stockings, "
-    "garter belt, sailor hat, military jacket, biker boots, striped tights, furry earmuffs, "
-    "parka, fleece-lined leggings, fingerless mittens, feathered hair clip, cape, denim jacket, "
-    "cutout boots, lacy thigh-highs, furry boots, floral dress, collared shirt, tweed blazer, "
-    "corset top, jumpsuit, combat boots, fringed bag, wool coat, cable-knit sweater, "
-    "cargo pants, lace-up boots, suede skirt, wide-brimmed hat, embroidered jacket, "
-    "beaded bracelet, leather pants, sheer blouse, geometric earrings, diamond choker, "
-    "velvet pumps, sequin dress, tassel earrings, ruffle skirt, cropped jacket, studded boots, "
-    "peacock feather hair clip, crochet top, polka dot dress, silk scarf, fringe vest, "
-    "pom-pom beanie".split(",")
-)
 
 BASE_PROMPT = "(mksks style), (masterpiece), (best quality), (ultra-detailed), (highres), illustration, portrait, 1girl"
 
@@ -36,20 +13,10 @@ NEGATIVE_PROMPT = (
 
 
 def prompt_input(prompt: PastelPrompt) -> dict:
-
-    if prompt.type == PromptType.CUSTOM:
-        res_prompt = BASE_PROMPT + prompt.input
-
-    elif prompt.type == PromptType.RANDOM:
-        res_prompt = BASE_PROMPT + ",".join(random.sample(EXTRA_RANDOM_PROMPT, 5))
-
-    else:
-        res_prompt = BASE_PROMPT
-
     data = {
         "input": {
-            "prompt": res_prompt,
-            "neg_prompt": NEGATIVE_PROMPT,
+            "prompt": prompt.prompt_input,
+            "neg_prompt": prompt.negative_prompt_input,
             "width": 448,
             "height": 640,
             "steps": 20,

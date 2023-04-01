@@ -1,7 +1,7 @@
 .ONESHELL:
 SHELL = bash
 
-backend_container := pastel-backend
+backend_container := backend
 docker_run := docker compose run --rm
 docker_backend := $(docker_run) $(backend_container)
 
@@ -13,6 +13,9 @@ docker_production_backend := $(docker_production_run) $(backend_container)
 
 hello:
 	echo "Hello, world!"
+
+rundev:
+	docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d --build backend db scheduler redis
 
 runproduction:
 	docker compose -f production.docker-compose.yml up -d

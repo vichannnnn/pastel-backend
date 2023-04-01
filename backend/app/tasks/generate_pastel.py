@@ -1,9 +1,8 @@
 import requests
 from app.worker import celery_app
-from app.schemas.core import PastelPrompt, PromptType
+from app.schemas.core import PastelPrompt
 from app.models.core import PastelArt
-from app.logic import prompt_input
-from typing import Dict, Union
+from fastapi.encoders import jsonable_encoder
 import base64
 import random
 from faker import Faker
@@ -11,6 +10,7 @@ from app.exceptions import AppError
 import psycopg
 import os
 from psycopg import sql
+from typing import Dict
 
 
 DB_URL = os.environ["TASK_RUNNER_DATABASE_URL"]
@@ -19,9 +19,20 @@ PASTEL_GENERATE_ENDPOINT = "/predictions"
 
 
 @celery_app.task(name="generate_pastel_art")
-def generate_pastel_art(prompt: Dict[str, Union[str, PromptType]]) -> str:
-    prompt = PastelPrompt(**prompt)
-    data = prompt_input(prompt)
+def generate_pastel_art(prompt: Dict[str, str]) -> str:
+
+    data = {
+        "input": {
+            **prompt,
+            "width": 448,
+            "height": 640,
+            "steps": 20,
+            "guidance": 7,
+            "seed": 0,
+            "hires": True,
+        }
+    }
+
     resp = requests.post(API_URL + PASTEL_GENERATE_ENDPOINT, json=data)
     try:
         img_string = resp.json()["output"][0]
@@ -33,9 +44,11 @@ def generate_pastel_art(prompt: Dict[str, Union[str, PromptType]]) -> str:
     img_data = base64.b64decode(img_string)
 
     fake = Faker()
-    image_name = f"{fake.word()}_{fake.word()}_{fake.word()}_{random.randint(1000, 99999)}.png"
+    image_name = (
+        f"{fake.word()}_{fake.word()}_{fake.word()}_{random.randint(1000, 99999)}.png"
+    )
     file_name = f"/app/images/{image_name}"
-    
+
     with open(file_name, "wb") as f:
         f.write(img_data)
 

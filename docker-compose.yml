@@ -5,7 +5,7 @@ services:
   backend:
     container_name: backend
     build: ./backend
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     networks:
       - internal-network
     environment:
@@ -24,6 +24,7 @@ services:
       - images-volume:/app/images
 
   db:
+    container_name: db
     networks:
       - internal-network
     environment:
@@ -53,6 +54,7 @@ services:
     restart: unless-stopped
 
   scheduler:
+    container_name: celery
     networks:
      - internal-network
     environment:
@@ -74,6 +76,7 @@ services:
 
 
   scheduler-gui:
+    container_name: celery_gooey
     environment:
       CELERY_BROKER_URL: ${REDIS_URL}
     networks:
@@ -89,6 +92,7 @@ services:
     restart: unless-stopped
 
   caddy:
+    container_name: caddy
     image: caddy:2.6.2-alpine
     networks:
       - internal-network
@@ -96,14 +100,19 @@ services:
       - '80:80'
       - '443:443'
       - '5173:5173'
+      - '8000:8000'
       - '8001:8001'
-      - '8002:8002'
+    environment:
+        BACKEND_URL: ${BACKEND_URL}
+        BACKEND_CONTAINER_URL: ${BACKEND_CONTAINER_URL}
+        FRONTEND_URL: ${FRONTEND_URL}
+        FRONTEND_CONTAINER_URL: ${FRONTEND_CONTAINER_URL}
+        IMAGE_URL: ${IMAGE_URL}
     volumes:
       - images-volume:/srv
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
-
 
 volumes:
   images-volume:
