@@ -5,9 +5,7 @@ services:
   backend:
     container_name: backend
     build: ./backend
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-    ports:
-      - "8000:8000"
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
     networks:
       - internal-network
     environment:
@@ -90,19 +88,27 @@ services:
     image: mher/flower:1.2.0
     restart: unless-stopped
 
-  image-nginx:
-    container_name: image-nginx
-    image: image-nginx
+  caddy:
+    image: caddy:2.6.2-alpine
     networks:
       - internal-network
     ports:
       - '80:80'
+      - '443:443'
+      - '5173:5173'
+      - '8001:8001'
+      - '8002:8002'
     volumes:
-      - images-volume:/usr/share/nginx/html/images
+      - images-volume:/srv
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
 
 
 volumes:
   images-volume:
+  caddy_config: null
+  caddy_data: null
 
 networks:
   internal-network:
