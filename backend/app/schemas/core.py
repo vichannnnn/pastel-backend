@@ -20,6 +20,10 @@ class PromptType(str, Enum):
 class PastelPrompt(BaseModel):
     prompt: str
     neg_prompt: str
+    height: int
+    width: int
+    steps: int
+    guidance: float
 
 
 class PastelImage(BaseModel):

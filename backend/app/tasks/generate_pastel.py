@@ -24,22 +24,13 @@ def generate_pastel_art(prompt: Dict[str, str]) -> str:
     data = {
         "input": {
             **prompt,
-            "width": 448,
-            "height": 640,
-            "steps": 20,
-            "guidance": 7,
             "seed": 0,
             "hires": True,
         }
     }
 
     resp = requests.post(API_URL + PASTEL_GENERATE_ENDPOINT, json=data)
-    try:
-        img_string = resp.json()["output"][0]
-
-    except IndexError as e:
-        raise AppError.NSFW_ERROR from e
-
+    img_string = resp.json()["output"][0]
     img_string = img_string.split(",")[1]
     img_data = base64.b64decode(img_string)
 
@@ -84,7 +75,7 @@ def generate_pastel_art(prompt: Dict[str, str]) -> str:
             )
             cur.execute(insert_stmt, values)
         conn.commit()
-    return resp.json()["output"][0]
+    return image_name
 
 
 # @celery_app.task(name="automated_generate_pastel_art_task")
